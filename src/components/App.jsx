@@ -8,18 +8,23 @@ import initialContacts from '../contacts.json';
 
 function App() {
   const contacts = useSelector(selectContacts);
+  const searchTerm = useSelector((state) => state.filters.name);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadContacts(initialContacts));
   }, [dispatch]);
 
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       <h1>Phonebook</h1>
       <ContactForm />
       <SearchBox />
-      <ContactList contacts={contacts} />
+      <ContactList contacts={filteredContacts} />
     </div>
   );
 }
