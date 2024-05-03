@@ -1,4 +1,4 @@
-
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeFilter } from '../../redux/filtersSlice';
 
@@ -7,8 +7,7 @@ const SearchBox = () => {
   const searchTerm = useSelector((state) => state.filters.name);
 
   const handleChange = (event) => {
-    const { value } = event.target;
-    dispatch(changeFilter(value));
+    dispatch(changeFilter(event.target.value)); 
   };
 
   return (
