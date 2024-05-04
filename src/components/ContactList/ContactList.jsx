@@ -1,32 +1,46 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact,  deleteContact, selectContacts } from '../../redux/contactsSlice';
+import { useSelector } from 'react-redux';
+import { selectContacts } from '../../redux/contactsSlice';
 import css from "./ContactList.module.css";
-import { HiOutlinePhoneIncoming, HiUserAdd } from "react-icons/hi";
-import initialContacts from '../../contacts.json';
+import Contact from '../Contact/Contact';
 
 const ContactList = () => {
-  const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
-  const [contactsLoaded, setContactsLoaded] = useState(false);
-
-  useEffect(() => {
-    if (!contactsLoaded) {
-      initialContacts.forEach(contact => {
-        dispatch(addContact(contact));
-      });
-      setContactsLoaded(true);
-    }
-  }, [dispatch, contactsLoaded]);
-
   const searchTerm = useSelector(state => state.filters.name);
+
   const filteredContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  return (
+    <div className={css.container}>
+      {filteredContacts.map((contact) => (
+        <div className={css.card} key={contact.id}>
+          <Contact id={contact.id} name={contact.name} number={contact.number} />
+        </div>
+      ))}
+    </div>
+  );
+};
 
-  const handleDelete = (contact) => {
-    dispatch(deleteContact(contact.id)); 
+export default ContactList;
+
+
+/* import { useDispatch, useSelector } from 'react-redux';
+import { deleteContact, selectContacts } from '../../redux/contactsSlice';
+import css from "./ContactList.module.css";
+import { HiOutlinePhoneIncoming, HiUserAdd } from "react-icons/hi";
+
+const ContactList = () => {
+  const contacts = useSelector(selectContacts);
+  const searchTerm = useSelector(state => state.filters.name);
+  const dispatch = useDispatch(); // Додано оголошення dispatch
+
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleDelete = (id) => {
+    dispatch(deleteContact(id));
   };
 
   return (
@@ -44,4 +58,4 @@ const ContactList = () => {
   );
 };
 
-export default ContactList;
+export default ContactList; */
